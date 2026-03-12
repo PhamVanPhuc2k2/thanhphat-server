@@ -7,6 +7,7 @@ import {
 } from "./article.types";
 import Article from "./article.models";
 import { listArticleQuery } from "../../utils/query/listArticle.query";
+import cloudinary from "../../configs/cloudinary";
 
 export const articleServices = {
   create: async (data: CreateArticleType) => {
@@ -47,6 +48,16 @@ export const articleServices = {
   delete: async (id: string) => {
     const deletedArticle = await Article.findByIdAndDelete(id);
     if (!deletedArticle) throw ApiError.NotFound("Bài viết không tồn tại");
+    const destroyPromises: Promise<any>[] = [];
+    if (deletedArticle.thumbnail?.public_id) {
+      destroyPromises.push(cloudinary.uploader.destroy(deletedArticle.thumbnail.public_id));
+    }
+    if (deletedArticle.images?.length) {
+      deletedArticle.images.forEach((img: any) => {
+        if (img.public_id) destroyPromises.push(cloudinary.uploader.destroy(img.public_id));
+      });
+    }
+    await Promise.allSettled(destroyPromises);
     return id;
   },
   list: async (query: QueryArticleType) => {

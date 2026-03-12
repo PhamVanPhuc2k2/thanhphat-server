@@ -35,7 +35,6 @@ const adminSchema = new mongoose.Schema(
   },
 );
 
-adminSchema.index({ email: 1 });
 adminSchema.index({ isActive: 1 });
 
 export default mongoose.model("Admin", adminSchema);

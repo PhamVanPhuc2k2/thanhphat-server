@@ -17,7 +17,7 @@ export interface QueryBannerType {
   page?: number;
   limit?: number;
   isActive?: boolean;
-  categoryId?: boolean;
+  categoryId?: string;
 }
 
 export interface UpdateBannerType {

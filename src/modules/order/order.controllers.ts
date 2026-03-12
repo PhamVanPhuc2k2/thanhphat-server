@@ -21,7 +21,7 @@ export const orderController = {
   },
 
   list: async (req: Request, res: Response) => {
-    const result = await orderService.list(req.query as any);
+    const result = await orderService.list(res.locals.query);
     res.status(StatusCodes.OK).json({
       message: "Lấy danh sách đơn hàng thành công",
       data: result,

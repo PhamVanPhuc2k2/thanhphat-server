@@ -7,6 +7,7 @@ import Category from "../category/category.models";
 import Banner from "./banner.models";
 import { ApiError } from "../../utils/apiError";
 import { listBannerQuery } from "../../utils/query/listBanner.query";
+import cloudinary from "../../configs/cloudinary";
 export const bannerServices = {
   create: async (data: CreateBannerType) => {
     const { categoryId } = data;
@@ -42,6 +43,9 @@ export const bannerServices = {
   delete: async (id: string) => {
     const banner = await Banner.findByIdAndDelete(id);
     if (!banner) throw ApiError.NotFound("Banner không tồn tại");
+    if (banner.image?.public_id) {
+      await cloudinary.uploader.destroy(banner.image.public_id);
+    }
     return id;
   },
   detail: async (id: string) => {

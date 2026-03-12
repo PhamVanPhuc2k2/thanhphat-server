@@ -14,17 +14,12 @@ export const variantServices = {
     const { productId, name, discountPrice, price } = data;
     const checkProduct = await Product.findById(productId);
     if (!checkProduct) throw ApiError.NotFound("Sản phẩm không tồn tại");
-    const slug = handleSlugify(name);
-    const checkSlug = await Variant.findOne({ slug });
-    if (checkSlug) throw ApiError.Conflict("Tên biến thể đã tồn tại");
-    data.slug = slug;
     if (discountPrice) {
       if (discountPrice > price)
         throw ApiError.BadRequest(
           "Giá đặc biệt không thể lớn hơn giá niêm yết",
         );
-      const percentDiscount = Math.ceil((1 - discountPrice / price) * 100);
-      data.discountPrice = percentDiscount;
+      data.percentDiscount = Math.ceil((1 - discountPrice / price) * 100);
     }
     const variant = await Variant.create(data);
     return { variant };

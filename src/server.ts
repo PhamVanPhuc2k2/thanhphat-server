@@ -3,9 +3,10 @@ dotenv.config();
 import app from "./app";
 import connectDB from "./configs/connectDB";
 import { connectRedis, redis } from "./configs/redis";
+import { env } from "./configs/env";
 import mongoose from "mongoose";
 
-const PORT = process.env.PORT || 9999;
+const PORT = env.PORT;
 
 const startServer = async () => {
   await connectDB();

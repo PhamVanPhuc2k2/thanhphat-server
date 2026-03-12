@@ -15,6 +15,9 @@ import { authMiddleware } from "../../middlewares/authMiddleware";
 
 const router = Router();
 
+// Public endpoint
+router.get("/list", asyncHandler(brandControllers.publicList));
+
 router.post(
   "/admin/upload",
   authMiddleware,

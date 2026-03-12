@@ -41,4 +41,8 @@ export const brandControllers = {
     const brands = await brandServices.all(query);
     return res.status(200).json(brands);
   },
+  publicList: async (_req: Request, res: Response) => {
+    const result = await brandServices.publicList();
+    return res.status(200).json(result);
+  },
 };

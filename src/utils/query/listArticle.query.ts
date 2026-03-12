@@ -13,7 +13,7 @@ export const listArticleQuery = (query: QueryArticleType) => {
     ];
   }
   if (typeof isPublished === "boolean") {
-    filters.isPublish = isPublished;
+    filters.isPublished = isPublished;
   }
   options.sort = { viewCount: -1 };
   options.page = page;

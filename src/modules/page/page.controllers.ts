@@ -27,7 +27,7 @@ export const pageControllers = {
     return res.status(200).json(deletedId);
   },
   list: async (req: Request, res: Response) => {
-    const query = req.query as any;
+    const query = res.locals.query;
     const result = await pageServices.list(query);
     return res.status(200).json(result);
   },

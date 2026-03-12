@@ -46,7 +46,7 @@ export const adminService = {
     const { email, password } = data;
     const checkAdmin = await Admin.findOne({ email });
     if (checkAdmin) throw ApiError.Conflict("Email đã được đăng ký");
-    const hashed = hashPassword(password);
+    const hashed = await hashPassword(password);
     const doc = { ...data, password: hashed };
     const admin = await Admin.create(doc);
 
@@ -62,13 +62,13 @@ export const adminService = {
   login: async (data: loginAdminTypes, ip?: string) => {
     const { email, password } = data;
     const admin = await Admin.findOne({ email }).select("+password");
-    if (!admin) throw ApiError.NotFound("Email chưa được đăng ký");
+    if (!admin) throw ApiError.BadRequest("Tài khoản hoặc mật khẩu không chính xác");
 
     // #15: Check isActive on login
     if (!admin.isActive)
       throw ApiError.Forbidden("Tài khoản đã bị vô hiệu hóa");
 
-    const compared = comparePassword(password, admin.password);
+    const compared = await comparePassword(password, admin.password);
     if (!compared)
       throw ApiError.BadRequest("Tài khoản hoặc mật khẩu không chính xác");
 
@@ -103,7 +103,7 @@ export const adminService = {
     ip?: string,
   ) => {
     if (data.password) {
-      data.password = hashPassword(data.password);
+      data.password = await hashPassword(data.password);
     }
     const updatedAdmin = await Admin.findByIdAndUpdate(id, data, {
       new: true,
@@ -221,10 +221,10 @@ export const adminService = {
     const admin = await Admin.findById(adminId).select("+password");
     if (!admin) throw ApiError.NotFound("Admin không tồn tại");
 
-    const isMatch = comparePassword(currentPassword, admin.password);
+    const isMatch = await comparePassword(currentPassword, admin.password);
     if (!isMatch) throw ApiError.BadRequest("Mật khẩu hiện tại không đúng");
 
-    admin.password = hashPassword(newPassword);
+    admin.password = await hashPassword(newPassword);
     await admin.save();
 
     // Invalidate refresh token to force re-login

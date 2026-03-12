@@ -16,12 +16,16 @@ export const validateRequest = (schema: ZodObject) => {
         path: e.path.join("."),
         message: e.message,
       }));
-      throw ApiError.BadRequest(
-        `Validation error: ${details.map((i) => i.path).join(", ")}`,
-        details,
+      return next(
+        ApiError.BadRequest(
+          details.map((i) => `${i.path}: ${i.message}`).join("; "),
+          details,
+        ),
       );
     }
     res.locals.query = result.data.query;
+    res.locals.body = result.data.body;
+    res.locals.params = result.data.params;
     next();
   };
 };

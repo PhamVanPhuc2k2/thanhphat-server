@@ -37,6 +37,7 @@ router.put(
 
 router.delete(
   "/admin/delete/:id",
+  authMiddleware,
   validateRequest(DeleteArticleSchema),
   asyncHandler(articleControllers.delete),
 );

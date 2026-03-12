@@ -23,7 +23,7 @@ export interface UpdateBrandTypes {
 export interface ListBrandQuery {
   page?: number;
   limit?: number;
-  search?: "";
+  search?: string;
   isActive?: boolean;
 }
 

@@ -3,7 +3,7 @@ import z from "zod";
 const schema = z.object({
   NODE_ENV: z.enum(["production", "development"]).default("development"),
   PORT: z.coerce.number().default(3000),
-  MONGO_URL: z.url(),
+  MONGO_URL: z.string().min(1),
   CORS_ORIGINS: z.string(),
   FRONTEND_BASE_URL: z.string(),
   SECRET_ACCESS_TOKEN: z.string(),

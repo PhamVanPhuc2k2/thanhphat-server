@@ -121,6 +121,9 @@ export const adminController = {
     const { id } = req.params as { id: string };
     const data = req.body;
     const performedBy = res.locals.admin._id;
+    if (id === performedBy.toString()) {
+      throw ApiError.BadRequest("Không thể thay đổi trạng thái tài khoản của chính bạn");
+    }
     const ip = req.ip;
     const result = await adminService.toggleStatus(id, data, performedBy, ip);
     return res.status(200).json(result);

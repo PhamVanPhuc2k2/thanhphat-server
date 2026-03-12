@@ -4,8 +4,8 @@ import { AUTH } from "../configs/auth.constants";
 
 export const getRefreshCookieOptions = (): CookieOptions => ({
   httpOnly: true,
-  secure: env.NODE_ENV === "production",
-  sameSite: "lax",
+  secure: true,
+  sameSite: "none",
   path: "/",
   maxAge: AUTH.COOKIE_MAX_AGE,
 });

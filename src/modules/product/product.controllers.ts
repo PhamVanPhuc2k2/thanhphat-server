@@ -53,4 +53,13 @@ export const productControllers = {
     const product = await productServices.detail(id);
     return res.status(200).json(product);
   },
+  publicList: async (req: Request, res: Response) => {
+    const result = await productServices.publicList(req.query);
+    return res.status(200).json(result);
+  },
+  publicDetail: async (req: Request, res: Response) => {
+    const { slug } = req.params as { slug: string };
+    const result = await productServices.publicDetail(slug);
+    return res.status(200).json(result);
+  },
 };

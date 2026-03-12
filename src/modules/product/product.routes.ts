@@ -14,6 +14,10 @@ import { upload } from "../../configs/multer";
 
 const router = Router();
 
+// Public endpoints
+router.get("/list", asyncHandler(productControllers.publicList));
+router.get("/detail/:slug", asyncHandler(productControllers.publicDetail));
+
 router.post(
   "/admin/upload",
   authMiddleware,

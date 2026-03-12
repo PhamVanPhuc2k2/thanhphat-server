@@ -1,4 +1,4 @@
-import z, { string } from "zod";
+import z from "zod";
 import { ZodEmptyObject } from "../../middlewares/validateRequest";
 
 export const CreateArticleSchema = z.object({
@@ -18,8 +18,8 @@ export const CreateArticleSchema = z.object({
         description: z.string(),
         keywords: z.array(z.string()),
         ogImage: z.object({
-          url: string,
-          public_id: string,
+          url: z.string(),
+          public_id: z.string(),
         }),
       })
       .optional()
@@ -48,8 +48,8 @@ export const UpdateArticleSchema = z.object({
         description: z.string(),
         keywords: z.array(z.string()),
         ogImage: z.object({
-          url: string,
-          public_id: string,
+          url: z.string(),
+          public_id: z.string(),
         }),
       })
       .optional(),

@@ -280,7 +280,7 @@ export const categoryService = {
     if (cached) {
       return { menu: JSON.parse(cached) };
     }
-    const parserQuery = allCategoryQuery({ isActive: false });
+    const parserQuery = allCategoryQuery({ isActive: true });
     const { filter, options } = parserQuery;
     const menu = await Category.find(filter).sort(options.sort).select({
       createdAt: 0,

@@ -6,7 +6,7 @@ export const upload = (type: Upload) => {
   return multer({
     storage: multer.memoryStorage(),
     limits: {
-      fieldSize: type === "image" ? 5 * 1024 * 1024 : 50 * 1024 * 1024,
+      fileSize: type === "image" ? 5 * 1024 * 1024 : 50 * 1024 * 1024,
     },
     fileFilter: (_req, file, cb) => {
       if (type === "image" && !file.mimetype.startsWith("image/")) {

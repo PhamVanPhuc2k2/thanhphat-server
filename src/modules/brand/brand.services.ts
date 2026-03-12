@@ -86,4 +86,8 @@ export const brandServices = {
     const brands = await Brand.find(filter).sort(options.sort);
     return { brands };
   },
+  publicList: async () => {
+    const brands = await Brand.find({ isActive: true }).sort({ name: 1 }).lean();
+    return { brands };
+  },
 };

@@ -16,7 +16,7 @@ export const variantControllers = {
   create: async (req: Request, res: Response) => {
     const data = req.body;
     const variant = await variantServices.create(data);
-    return res.status(200).json(variant);
+    return res.status(201).json(variant);
   },
   update: async (req: Request, res: Response) => {
     const { id } = req.params as { id: string };

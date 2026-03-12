@@ -34,13 +34,20 @@ const getAllUsedPublicIds = async () => {
   return ids;
 };
 
-const getAllCloudinaryImages = async (folder: string) => {
-  const result = await cloudinary.api.resources({
-    type: "upload",
-    prefix: folder,
-    max_results: 500,
-  });
-  return result.resources;
+const getAllCloudinaryImages = async (folder: string): Promise<any[]> => {
+  const resources: any[] = [];
+  let nextCursor: string | undefined;
+  do {
+    const result = await cloudinary.api.resources({
+      type: "upload",
+      prefix: folder,
+      max_results: 500,
+      ...(nextCursor ? { next_cursor: nextCursor } : {}),
+    });
+    resources.push(...result.resources);
+    nextCursor = result.next_cursor;
+  } while (nextCursor);
+  return resources;
 };
 
 const cleanupCloudinary = async () => {

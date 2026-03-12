@@ -18,7 +18,7 @@ export const authMiddleware = (
 ) => {
   const authHeader = req.headers["authorization"];
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    throw ApiError.UnAuthorized("Không có access token");
+    return next(ApiError.UnAuthorized("Không có access token"));
   }
 
   const token = authHeader.split(" ")[1];
@@ -37,6 +37,6 @@ export const authMiddleware = (
 
     next();
   } catch {
-    throw ApiError.UnAuthorized("Token không hợp lệ hoặc đã hết hạn");
+    return next(ApiError.UnAuthorized("Token không hợp lệ hoặc đã hết hạn"));
   }
 };
