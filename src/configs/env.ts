@@ -12,6 +12,8 @@ const schema = z.object({
   CLOUD_KEY: z.string(),
   CLOUD_SECRET: z.string(),
   REDIS_URL: z.string(),
+  TELEGRAM_BOT_TOKEN: z.string().optional(),
+  TELEGRAM_CHAT_ID: z.string().optional(),
 });
 
 export const env = schema.parse(process.env);

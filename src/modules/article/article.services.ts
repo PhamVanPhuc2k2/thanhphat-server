@@ -82,8 +82,14 @@ export const articleServices = {
   detail: async (id: string) => {
     const article = await Article.findById(id);
     if (!article) throw ApiError.NotFound("Bài viết không tồn tại");
-    return {
-      article,
-    };
+    return { article };
+  },
+
+  detailBySlug: async (slug: string) => {
+    const article = await Article.findOne({ slug, isPublished: true });
+    if (!article) throw ApiError.NotFound("Bài viết không tồn tại");
+    // Tăng viewCount bất đồng bộ, không block response
+    Article.findByIdAndUpdate(article._id, { $inc: { viewCount: 1 } }).exec();
+    return { article };
   },
 };

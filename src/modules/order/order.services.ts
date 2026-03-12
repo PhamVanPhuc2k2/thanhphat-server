@@ -4,6 +4,7 @@ import Variant from "../variant/variant.models";
 import { ApiError } from "../../utils/apiError";
 import { escapeRegex } from "../../utils/escapeRegex";
 import mongoose from "mongoose";
+import { sendNewOrderNotification } from "../../utils/telegramNotify";
 
 const generateOrderCode = (): string => {
   const now = new Date();
@@ -85,6 +86,20 @@ export const orderService = {
       );
 
       await session.commitTransaction();
+
+      // Gửi thông báo Telegram (fire-and-forget, không block response)
+      sendNewOrderNotification({
+        orderCode: order.orderCode,
+        customer: order.customer,
+        items: order.items.map((i) => ({
+          name: i.name,
+          variantName: i.variantName,
+          quantity: i.quantity,
+          price: i.price,
+        })),
+        totalAmount: order.totalAmount,
+      }).catch(() => {}); // lỗi thông báo không ảnh hưởng đến đơn hàng
+
       return { order };
     } catch (error) {
       await session.abortTransaction();
@@ -205,6 +220,21 @@ export const orderService = {
   detail: async (id: string) => {
     const order = await Order.findById(id).select("-__v");
     if (!order) throw ApiError.NotFound("Đơn hàng không tồn tại");
+    return { order };
+  },
+
+  /**
+   * Tra cứu đơn hàng theo orderCode + phone (public)
+   */
+  track: async (orderCode: string, phone: string) => {
+    const order = await Order.findOne({
+      orderCode: orderCode.trim(),
+      "customer.phone": phone.trim(),
+    }).select("-__v");
+    if (!order)
+      throw ApiError.NotFound(
+        "Không tìm thấy đơn hàng với thông tin đã cung cấp",
+      );
     return { order };
   },
 

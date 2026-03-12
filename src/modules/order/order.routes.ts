@@ -5,6 +5,7 @@ import {
   updateOrderStatusSchema,
   getOrderSchema,
   listOrderSchema,
+  trackOrderSchema,
 } from "./order.validates";
 import { orderController } from "./order.controllers";
 import { asyncHandler } from "../../utils/asyncHandler";
@@ -17,6 +18,13 @@ router.post(
   "/create",
   validateRequest(createOrderSchema),
   asyncHandler(orderController.create),
+);
+
+// ===== Public - Tra cứu đơn hàng =====
+router.get(
+  "/track",
+  validateRequest(trackOrderSchema),
+  asyncHandler(orderController.track),
 );
 
 // ===== Admin (cần authMiddleware) =====

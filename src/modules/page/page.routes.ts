@@ -48,6 +48,12 @@ router.get(
   asyncHandler(pageControllers.list),
 );
 
+// Public: lấy trang tĩnh theo slug (cho client)
+router.get(
+  "/slug/:slug",
+  asyncHandler(pageControllers.detailBySlug),
+);
+
 router.get(
   "/:id",
   validateRequest(GetDetailPageSchema),

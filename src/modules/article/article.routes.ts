@@ -48,6 +48,12 @@ router.get(
   asyncHandler(articleControllers.list),
 );
 
+// Public: lấy bài viết theo slug (cho client)
+router.get(
+  "/slug/:slug",
+  asyncHandler(articleControllers.detailBySlug),
+);
+
 router.get(
   "/:id",
   validateRequest(GetDetailSchema),

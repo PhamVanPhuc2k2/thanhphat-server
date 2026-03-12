@@ -54,4 +54,10 @@ export const pageServices = {
     if (!page) throw ApiError.NotFound("Trang không tồn tại");
     return { page };
   },
+
+  detailBySlug: async (slug: string) => {
+    const page = await Page.findOne({ slug });
+    if (!page) throw ApiError.NotFound("Trang không tồn tại");
+    return { page };
+  },
 };

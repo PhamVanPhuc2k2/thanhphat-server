@@ -1,9 +1,9 @@
 export interface CustomerInfo {
   name: string;
   phone: string;
-  email?: string;
+  email?: string | null;
   address: string;
-  note?: string;
+  note?: string | null;
 }
 
 export interface OrderItem {

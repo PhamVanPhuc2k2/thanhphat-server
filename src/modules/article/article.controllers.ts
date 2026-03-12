@@ -36,4 +36,10 @@ export const articleControllers = {
     const article = await articleServices.detail(id);
     return res.status(200).json(article);
   },
+
+  detailBySlug: async (req: Request, res: Response) => {
+    const { slug } = req.params as { slug: string };
+    const article = await articleServices.detailBySlug(slug);
+    return res.status(200).json(article);
+  },
 };

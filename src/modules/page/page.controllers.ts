@@ -36,4 +36,10 @@ export const pageControllers = {
     const page = await pageServices.detail(id);
     return res.status(200).json(page);
   },
+
+  detailBySlug: async (req: Request, res: Response) => {
+    const { slug } = req.params as { slug: string };
+    const page = await pageServices.detailBySlug(slug);
+    return res.status(200).json(page);
+  },
 };

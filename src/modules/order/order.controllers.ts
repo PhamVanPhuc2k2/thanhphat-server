@@ -11,6 +11,15 @@ export const orderController = {
     });
   },
 
+  track: async (req: Request, res: Response) => {
+    const { orderCode, phone } = req.query as { orderCode: string; phone: string };
+    const result = await orderService.track(orderCode, phone);
+    res.status(StatusCodes.OK).json({
+      message: "Lấy thông tin đơn hàng thành công",
+      data: result,
+    });
+  },
+
   updateStatus: async (req: Request, res: Response) => {
     const id = req.params.id as string;
     const result = await orderService.updateStatus(id, req.body);

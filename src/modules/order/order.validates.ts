@@ -51,6 +51,18 @@ export const getOrderSchema = z.object({
   query: ZodEmptyObject,
 });
 
+export const trackOrderSchema = z.object({
+  body: ZodEmptyObject,
+  params: ZodEmptyObject,
+  query: z.object({
+    orderCode: z.string().min(1, "Mã đơn hàng không được để trống"),
+    phone: z
+      .string()
+      .min(9, "Số điện thoại không hợp lệ")
+      .max(15, "Số điện thoại không hợp lệ"),
+  }),
+});
+
 export const listOrderSchema = z.object({
   body: ZodEmptyObject,
   params: ZodEmptyObject,

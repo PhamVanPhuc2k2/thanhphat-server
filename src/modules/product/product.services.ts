@@ -12,6 +12,7 @@ import { redis } from "../../configs/redis";
 import Variant from "../variant/variant.models";
 import { GetProductsQuery } from "../../utils/query/listProduct.query";
 import { escapeRegex } from "../../utils/escapeRegex";
+import { PipelineStage } from "mongoose";
 import mongoose from "mongoose";
 
 export const productServices = {
@@ -219,11 +220,11 @@ export const productServices = {
     }
 
     const total = await Product.countDocuments(matchStage);
-    let sortStage: Record<string, number> = { createdAt: -1 };
+    let sortStage: Record<string, 1 | -1> = { createdAt: -1 };
     if (sort === "price_asc") sortStage = { price: 1, createdAt: -1 };
     else if (sort === "price_desc") sortStage = { price: -1, createdAt: -1 };
 
-    const pipeline: object[] = [
+    const pipeline: PipelineStage[] = [
       { $match: matchStage },
       {
         $lookup: {
